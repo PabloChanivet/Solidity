@@ -33,7 +33,9 @@ contract ZombieFactory {
     //Añado la actualización de los mapping para asignarle propiedad a un zombie. Para ello usaré la variable global msg.sender que ya nos proporciona
     //solidity, que identifica la dirección de quien está llamando a la función publica createRandomZombie. Primero utilizo el mapping zombieToOwner para 
     //asignar al id del zombie la dirección del usuario, y después incremento el valor (contador) del mapping ownerZombieCount para esa dirección.
-    function _createZombie(string _name, uint _dna) private {
+    //Como hemos creado un segundo contrato y necesitamos que esta función sea accesible desde allí, cambio la función de private a internal. Internal es 
+    //lo mismo que private, pero permitiendo el acceso desde otros contratos que hereden del principal.
+    function _createZombie(string _name, uint _dna) internal {
         uint id = zombies.push(Zombie(_name, _dna)) - 1;        
         zombieToOwner[id] = msg.sender;
         ownerZombieCount[msg.sender]++;
