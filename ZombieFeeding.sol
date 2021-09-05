@@ -36,11 +36,18 @@ contract ZombieFeeding is ZombieFactory {
   //una variable local de tipo Zombie que es un puntero al zombie concreto del array de zombies, que se guardará en la blockchain (es decir, de tipo storage)
   //El ADN del zombie resultante lo calcularemos como el promedio entre el ADN del zombie y el ADN de la víctima, asegurándonos que el ADN de la víctima (_targetDNA)
   //tiene 16 dígitos (para ello nos quedamos con los últimos 16 dígitos usando la división módulo 16)
-  function feedAndMultiply(uint _zombieId, uint _targetDna) public {
+  //Vamos a hacer que los zombies alimentados con gatos tengan una característica especial que los convierta en gato-zombies. Esa característica va a ser que los 
+  //últimos 2 dígitos de su ADN (solo estamos teniendo en cuenta los primeros 12) sean 99. Para ello vamos a cambiar la definición de esta función para que acepte
+  //un tercer parámetro llamado _species, y que reemplace los últimos 2 dígitos por 99. Esto lo hacemos con la división módulo de 100 para quedarnos con los 2 últimos 
+  //dígitos (10^2), por lo que restandolos y sumandole 99 nos quedará un número acabado en 99
+  function feedAndMultiply(uint _zombieId, uint _targetDna, string _species) public {
     require(msg.sender == zombieToOwner[_zombieId]);
     Zombie storage myZombie = zombies[_zombieId];
     _targetDna = _targetDna % dnaModulus;
     uint newDna = (myZombie.dna + _targetDna ) / 2;
+    if(keccak256(_species) == keccak256("kitty")){
+        newDna =  newDna - newDna % 100 + 99;
+    }
     _createZombie("NoName", newDna);
   }
   
@@ -49,7 +56,7 @@ contract ZombieFeeding is ZombieFactory {
   function feedOnKitty(uint _zombieId, uint _kittyId) public {
       uint kittyDna;
       (,,,,,,,,, kittyDna) = kittyContract.getKitty(_kittyId);
-      feedAndMultiply(_zombieId, kittyDna);
+      feedAndMultiply(_zombieId, kittyDna, "kitty");
   }
 
 
