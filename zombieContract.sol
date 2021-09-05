@@ -49,7 +49,10 @@ contract ZombieFactory {
 
     //Creo una función pública (que podrá ser accedida por otros contratos de la blockchain) que se encargará de generar los zombies a partir
     //de un nombre introducido por el usuario
+    //Implemento una limitación (para ello uso require) para que solamente los nuevos usuarios puedan llamar a esta función para crear el primer zombie, ya que no queremos
+    //que un usuario pueda crear un ejército infinito de zombies.
     function createRandomZombie(string _name) public {
+        require(ownerZombieCount[msg.sender]==0);
         uint randDna = _generateRandomDna(_name);
         _createZombie(_name, randDna);
     }
