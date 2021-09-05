@@ -4,6 +4,24 @@ pragma solidity ^0.4.25;
 //Para ello tengo que importar el contrato del que hereda
 import "./zombieContract.sol";
 
+//Nuestros zombies se van a alimentar de cryptoKitties. Para ello nuestra dApp va a utilizar el contrato de cryptoKitties ya existente en la blockchain,
+//y para hacerlo necesitamos definir una interfaz. La interfaz va a definir la función getKitty de cryptoKitties, que devuelve entre otras cosas los genes
+//del kitty, que es lo que necesitamos para generar un nuevo zombie.
+contract KittyInterface {
+    function getKitty(uint256 _id) external view returns (
+        bool isGestating,
+        bool isReady,
+        uint256 cooldownIndex,
+        uint256 nextActionAt,
+        uint256 siringWithId,
+        uint256 birthTime,
+        uint256 matronId,
+        uint256 sireId,
+        uint256 generation,
+        uint256 genes
+    );
+}
+
 contract ZombieFeeding is ZombieFactory {
   
   //Vamos a crear una función pública (se puede llamar desde otros contratos) para que un zombie se alimente de otras formas de vida.
