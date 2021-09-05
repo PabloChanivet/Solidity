@@ -20,6 +20,13 @@ contract ZombieFactory {
 
     //Defino nuestro array de zombies como una variable de estado que estará definida en nuestro contrato en la blockchain
     Zombie[] public zombies;
+    
+    //Para hacer el juego multijugador, necesito asociar el zombie a un usuario (dirección). Para ello voy a usar dos mappings:
+    //El primer mapping será público (accesible desde cualquier contrato) y 
+    //tendrá como clave un uint, y como valor una dirección. Lo usaré para saber que zombie tiene cada dirección/usuario
+    mapping (uint => address) public zombieToOwner;
+    //El segundo tendrá una dirección como clave y un uint como valor. Lo usaré para saber cuantos zombies tiene cada dirección/usuario.
+    mapping (address => uint) ownerZombieCount;
 
     //Creo una función privada que genera un nuevo objeto Zombie a partir de un nombre y un ADN, y lo añade al array de Zombies.
     //Emito un evento de tipo NewZombie cada vez que se crea un nuevo zombie para que el frontend pueda detectar su creación.
