@@ -24,6 +24,10 @@ contract KittyInterface {
 
 contract ZombieFeeding is ZombieFactory {
   
+  //Vamos a utilizar el contrato de CryptoKitties. Para ello necesitamos la dirección de su contrato, e inicializar nuestra interfaz
+  address ckAddress = 0x06012c8cf97BEaD5deAe237070F9587f8E7A266d;
+  KittyInterface kittyContract = KittyInterface(ckAddress);
+  
   //Vamos a crear una función pública (se puede llamar desde otros contratos) para que un zombie se alimente de otras formas de vida.
   //Cuando esto pase el ADN del zombie se combinará con el ADN de la víctima, creando un nuevo zombie (la víctima se convierte en zombie).
   //Como no queremos que cualquier persona se alimente usando nuestro zombie, tenemos que comprobar que el zombie pertenece a quien está llamando
