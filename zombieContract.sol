@@ -30,8 +30,13 @@ contract ZombieFactory {
 
     //Creo una función privada que genera un nuevo objeto Zombie a partir de un nombre y un ADN, y lo añade al array de Zombies.
     //Emito un evento de tipo NewZombie cada vez que se crea un nuevo zombie para que el frontend pueda detectar su creación.
+    //Añado la actualización de los mapping para asignarle propiedad a un zombie. Para ello usaré la variable global msg.sender que ya nos proporciona
+    //solidity, que identifica la dirección de quien está llamando a la función publica createRandomZombie. Primero utilizo el mapping zombieToOwner para 
+    //asignar al id del zombie la dirección del usuario, y después incremento el valor (contador) del mapping ownerZombieCount para esa dirección.
     function _createZombie(string _name, uint _dna) private {
-        uint id = zombies.push(Zombie(_name, _dna)) - 1;
+        uint id = zombies.push(Zombie(_name, _dna)) - 1;        
+        zombieToOwner[id] = msg.sender;
+        ownerZombieCount[msg.sender]++;
         emit NewZombie(id, _name, _dna);
     }
 
