@@ -12,9 +12,14 @@ contract ZombieFeeding is ZombieFactory {
   //a la función. Para ello uso la cláusula require, asegurándome de que el msg.sender es igual al dueño del zombie.
   //Como necesito saber el ADN del zombie, necesito obtener un puntero al zombie, que está en mi array de zombies en la blockchain. Lo guardaré en
   //una variable local de tipo Zombie que es un puntero al zombie concreto del array de zombies, que se guardará en la blockchain (es decir, de tipo storage)
+  //El ADN del zombie resultante lo calcularemos como el promedio entre el ADN del zombie y el ADN de la víctima, asegurándonos que el ADN de la víctima (_targetDNA)
+  //tiene 16 dígitos (para ello nos quedamos con los últimos 16 dígitos usando la división módulo 16)
   function feedAndMultiply(uint _zombieId, uint _targetDna) public {
-      require(msg.sender == zombieToOwner[_zombieId]);
-      Zombie storage myZombie = zombies[_zombieId];
+    require(msg.sender == zombieToOwner[_zombieId]);
+    Zombie storage myZombie = zombies[_zombieId];
+    _targetDna = _targetDna % dnaModulus;
+    uint newDna = (myZombie.dna + _targetDna ) / 2;
+    _createZombie("NoName", newDna);
   }
 
 }
