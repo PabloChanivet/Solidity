@@ -59,8 +59,4 @@ contract ZombieFactory {
 
 }
 
-//Para evitar que el contrato se haga enorme, voy a usar herencia para crear un nuevo contrato que herede del anterior
-
-contract ZombieFeeding is ZombieFactory {
-
-}
+//Para evitar que el contrato se haga enorme, voy a usar herencia para crear un nuevo contrato que herede del anterior, que se llamará ZombieFeeding
