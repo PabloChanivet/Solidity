@@ -43,5 +43,14 @@ contract ZombieFeeding is ZombieFactory {
     uint newDna = (myZombie.dna + _targetDna ) / 2;
     _createZombie("NoName", newDna);
   }
+  
+  //Para interactuar con el contrato de cryptoKitties para alimentar a nuestros zombies, creo una función pública que obtendrá el ADN de un kitty utilizando la
+  //función definida en nuestra interfaz, y llamará a la función feedAndMultiply, que es la encargada de generar el nuevo zombie.
+  function feedOnKitty(uint _zombieId, uint _kittyId) public {
+      uint kittyDna;
+      (,,,,,,,,, kittyDna) = kittyContract.getKitty(_kittyId);
+      feedAndMultiply(_zombieId, kittyDna);
+  }
+
 
 }
